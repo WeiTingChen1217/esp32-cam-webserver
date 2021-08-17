@@ -31,6 +31,7 @@
 // Functions from the main .ino
 extern void flashLED(int flashtime);
 extern void setLamp(int newVal);
+extern void setServo(int dir);  //jacky add 
 extern void printLocalTime(bool extraData);
 
 // External variables declared in the main .ino
@@ -358,9 +359,15 @@ static esp_err_t cmd_handler(httpd_req_t *req){
            if (streamCount > 0) setLamp(lampVal);
            else setLamp(0);
         } else {
-            setLamp(lampVal);
+           setLamp(lampVal);
         }
     }
+    //jacky add servo
+    else if(!strcmp(variable, "servoUp")) setServo(1);
+    else if(!strcmp(variable, "servoLeft")) setServo(2);
+    else if(!strcmp(variable, "servoRight")) setServo(3);
+    else if(!strcmp(variable, "servoDown")) setServo(4);
+    
     else if(!strcmp(variable, "save_prefs")) {
         if (filesystem) savePrefs(SPIFFS);
     }

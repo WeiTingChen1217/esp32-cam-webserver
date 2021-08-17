@@ -8,6 +8,23 @@
 #include "time.h"
 
 
+//jacky add 20210816
+#include <ESP32Servo.h>
+
+#define SERVO_1      14
+#define SERVO_2      15
+
+#define SERVO_STEP   5
+
+Servo servoN1;
+Servo servoN2;
+Servo servo1;
+Servo servo2;
+
+int servo1Pos = 180;
+int servo2Pos = 140;
+
+
 /* This sketch is a extension/expansion/reork of the 'official' ESP32 Camera example
  *  sketch from Expressif:
  *  https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Camera/CameraWebServer
@@ -245,6 +262,44 @@ void setLamp(int newVal) {
     }
 }
 
+
+//jacky add 20210816
+void setServo(int dir) {
+      if(dir == 1) { //up
+        if(servo1Pos <= 170) {
+          servo1Pos += 10;
+          servo1.write(servo1Pos);
+        }
+        Serial.println(servo1Pos);
+        Serial.println("Up");
+      }
+      else if(dir == 2) { //left
+        if(servo2Pos <= 120) {
+          servo2Pos += 10;
+          servo2.write(servo2Pos);
+        }
+        Serial.println(servo2Pos);
+        Serial.println("Left");
+      }
+      else if(dir == 3) { //right
+        if(servo2Pos >= 10) {
+          servo2Pos -= 10;
+          servo2.write(servo2Pos);
+        }
+        Serial.println(servo2Pos);
+        Serial.println("Right");
+      }
+      else if(dir == 4) { //down
+        if(servo1Pos >= 10) {
+          servo1Pos -= 10;
+          servo1.write(servo1Pos);
+        }
+        Serial.println(servo1Pos);
+        Serial.println("Down");
+      }
+}
+
+
 void printLocalTime(bool extraData=false) {
     struct tm timeinfo;
     if(!getLocalTime(&timeinfo)){
@@ -445,6 +500,19 @@ void WifiSetup() {
 }
 
 void setup() {
+
+    //jacky add 20210816
+    servo1.setPeriodHertz(50);    // standard 50 hz servo
+    servo2.setPeriodHertz(50);    // standard 50 hz servo
+    servoN1.attach(2, 1000, 2000);
+    servoN2.attach(13, 1000, 2000);
+    
+    servo1.attach(SERVO_1, 1000, 2000);
+    servo2.attach(SERVO_2, 1000, 2000);
+    
+    servo1.write(servo1Pos);
+    servo2.write(servo2Pos);
+    
     // This might reduce boot loops caused by camera init failures when soft rebooting
     // See, for instance, https://esp32.com/viewtopic.php?t=3152
     Serial.begin(115200);

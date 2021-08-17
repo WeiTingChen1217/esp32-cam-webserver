@@ -243,6 +243,14 @@ const uint8_t index_ov2640_html[] = R"=====(<!doctype html>
                 <button id="save_prefs" title="Save Preferences on camera module">Save</button>
                 <button id="clear_prefs" title="Erase saved Preferences on camera module">Erase</button>
               </div>
+              <!--jacky add--> 
+              <div class="input-group" id="setServo-group">
+                <label for="reboot" style="line-height: 2em;">Set Servo</label>
+                <button id="servoUp" title="Servo Up">Down</button>
+                <button id="servoDown" title="Servo Down">Up</button>
+                <button id="servoLeft" title="Servo Left">Left</button>
+                <button id="servoRight" title="Servo Right">Right</button>
+              </div>
               <div class="input-group" id="cam_name-group">
                 <label for="cam_name">
                 <a href="/dump" title="System Info" target="_blank">Name</a></label>
@@ -296,6 +304,12 @@ const uint8_t index_ov2640_html[] = R"=====(<!doctype html>
     const savePrefsButton = document.getElementById('save_prefs')
     const clearPrefsButton = document.getElementById('clear_prefs')
     const rebootButton = document.getElementById('reboot')
+    //jacky add 
+    const setServoUp = document.getElementById('servoUp')
+    const setServoDown = document.getElementById('servoDown')
+    const setServoLeft = document.getElementById('servoLeft')
+    const setServoRight = document.getElementById('servoRight')
+
 
     const hide = el => {
       el.classList.add('hidden')
@@ -376,6 +390,11 @@ const uint8_t index_ov2640_html[] = R"=====(<!doctype html>
 
     function updateConfig (el) {
       let value
+
+      
+      console.log(`jacky is here again`)
+        
+      
       switch (el.type) {
         case 'checkbox':
           value = el.checked ? 1 : 0
@@ -568,6 +587,20 @@ const uint8_t index_ov2640_html[] = R"=====(<!doctype html>
           location.replace(document.URL);
         }, 30000);
       }
+    }
+    
+    //jacky add
+    setServoUp.onclick = () => {
+      updateConfig(setServoUp);
+    }
+    setServoDown.onclick = () => {
+      updateConfig(setServoDown);
+    }
+    setServoLeft.onclick = () => {
+      updateConfig(setServoLeft);
+    }
+    setServoRight.onclick = () => {
+      updateConfig(setServoRight);
     }
 
   })
