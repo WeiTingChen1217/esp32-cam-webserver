@@ -17,6 +17,8 @@
  */
 
 struct station stationList[] = {{"my_ssid","my_password", true}};
+const char* ssid = "my_ssid";
+const char* password = "my_password";
 
 /*
  * You can extend the stationList[] above with additional SSID+Password pairs

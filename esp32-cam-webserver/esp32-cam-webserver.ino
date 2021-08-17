@@ -268,12 +268,12 @@ void WifiSetup() {
     // (https://github.com/espressif/arduino-esp32/issues/1484)
     WiFi.setSleep(false);
 
-    Serial.print("Known external SSIDs: ");
-    if (stationCount > firstStation) {
-        for (int i=firstStation; i < stationCount; i++) Serial.printf(" '%s'", stationList[i].ssid);
-    } else {
-        Serial.print("None");
-    }
+//    Serial.print("Known external SSIDs: ");
+//    if (stationCount > firstStation) {
+//        for (int i=firstStation; i < stationCount; i++) Serial.printf(" '%s'", stationList[i].ssid);
+//    } else {
+//        Serial.print("None");
+//    }
     Serial.println();
     byte mac[6] = {0,0,0,0,0,0};
     WiFi.macAddress(mac);
@@ -283,88 +283,90 @@ void WifiSetup() {
     long bestRSSI = -1024;
     char bestSSID[65] = "";
     uint8_t bestBSSID[6];
-    if (stationCount > firstStation) {
-        // We have a list to scan 
-        Serial.printf("Scanning local Wifi Networks\r\n");
-        int stationsFound = WiFi.scanNetworks();
-        Serial.printf("%i networks found\r\n", stationsFound);
-        if (stationsFound > 0) {
-            for (int i = 0; i < stationsFound; ++i) {
-                // Print SSID and RSSI for each network found
-                String thisSSID = WiFi.SSID(i);
-                int thisRSSI = WiFi.RSSI(i);
-                String thisBSSID = WiFi.BSSIDstr(i);
-                Serial.printf("%3i : [%s] %s (%i)", i + 1, thisBSSID.c_str(), thisSSID.c_str(), thisRSSI);
-                // Scan our list of known external stations
-                for (int sta = firstStation; sta < stationCount; sta++) {
-                    if ((strcmp(stationList[sta].ssid, thisSSID.c_str()) == 0) || 
-                    (strcmp(stationList[sta].ssid, thisBSSID.c_str()) == 0)) {
-                        Serial.print("  -  Known!");
-                        // Chose the strongest RSSI seen
-                        if (thisRSSI > bestRSSI) {
-                            bestStation = sta;
-                            strncpy(bestSSID, thisSSID.c_str(), 64);
-                            // Convert char bssid[] to a byte array
-                            parseBytes(thisBSSID.c_str(), ':', bestBSSID, 6, 16);        
-                            bestRSSI = thisRSSI;
-                        }
-                    }
-                }
-                Serial.println();
-            }
-        }
-    } else {
-        // No list to scan, therefore we are an accesspoint
-        accesspoint = true; 
-    }
+//    if (stationCount > firstStation) {
+//        // We have a list to scan 
+//        Serial.printf("Scanning local Wifi Networks\r\n");
+//        int stationsFound = WiFi.scanNetworks();
+//        Serial.printf("%i networks found\r\n", stationsFound);
+//        if (stationsFound > 0) {
+//            for (int i = 0; i < stationsFound; ++i) {
+//                // Print SSID and RSSI for each network found
+//                String thisSSID = WiFi.SSID(i);
+//                int thisRSSI = WiFi.RSSI(i);
+//                String thisBSSID = WiFi.BSSIDstr(i);
+//                Serial.printf("%3i : [%s] %s (%i)", i + 1, thisBSSID.c_str(), thisSSID.c_str(), thisRSSI);
+//                // Scan our list of known external stations
+//                for (int sta = firstStation; sta < stationCount; sta++) {
+//                    if ((strcmp(stationList[sta].ssid, thisSSID.c_str()) == 0) || 
+//                    (strcmp(stationList[sta].ssid, thisBSSID.c_str()) == 0)) {
+//                        Serial.print("  -  Known!");
+//                        // Chose the strongest RSSI seen
+//                        if (thisRSSI > bestRSSI) {
+//                            bestStation = sta;
+//                            strncpy(bestSSID, thisSSID.c_str(), 64);
+//                            // Convert char bssid[] to a byte array
+//                            parseBytes(thisBSSID.c_str(), ':', bestBSSID, 6, 16);        
+//                            bestRSSI = thisRSSI;
+//                        }
+//                    }
+//                }
+//                Serial.println();
+//            }
+//        }
+//    } else {
+//        // No list to scan, therefore we are an accesspoint
+//        accesspoint = true; 
+//    }
 
-    if (bestStation == -1) {
-        if (!accesspoint) { 
-            #if defined(WIFI_AP_ENABLE)
-                Serial.println("No known networks found, entering AccessPoint fallback mode");
-                accesspoint = true;
-            #else
-                Serial.println("No known networks found");
-            #endif
-        } else {
-            Serial.println("AccessPoint mode selected in config");
-        }
-    } else {
-        Serial.printf("Connecting to Wifi Network %d: [%02X:%02X:%02X:%02X:%02X:%02X] %s \r\n", 
-                       bestStation, bestBSSID[0], bestBSSID[1], bestBSSID[2], bestBSSID[3], 
-                       bestBSSID[4], bestBSSID[5], bestSSID);
-        // Apply static settings if necesscary
-        if (stationList[bestStation].dhcp == false) {
-            #if defined(ST_IP)
-                Serial.println("Applying static IP settings");
-                #if !defined (ST_GATEWAY)  || !defined (ST_NETMASK) 
-                    #error "You must supply both Gateway and NetMask when specifying a static IP address"
-                #endif
-                IPAddress staticIP(ST_IP);
-                IPAddress gateway(ST_GATEWAY);
-                IPAddress subnet(ST_NETMASK);
-                #if !defined(ST_DNS1)
-                    WiFi.config(staticIP, gateway, subnet);
-                #else
-                    IPAddress dns1(ST_DNS1);
-                #if !defined(ST_DNS2)
-                    WiFi.config(staticIP, gateway, subnet, dns1);
-                #else
-                    IPAddress dns2(ST_DNS2);
-                    WiFi.config(staticIP, gateway, subnet, dns1, dns2);
-                #endif
-                #endif
-            #else
-                Serial.println("Static IP settings requested but not defined in config, falling back to dhcp");
-            #endif
-        }
+//    if (bestStation == -1) {
+//        if (!accesspoint) { 
+//            #if defined(WIFI_AP_ENABLE)
+//                Serial.println("No known networks found, entering AccessPoint fallback mode");
+//                accesspoint = true;
+//            #else
+//                Serial.println("No known networks found");
+//            #endif
+//        } else {
+//            Serial.println("AccessPoint mode selected in config");
+//        }
+//    } else {
+//        Serial.printf("Connecting to Wifi Network %d: [%02X:%02X:%02X:%02X:%02X:%02X] %s \r\n", 
+//                       bestStation, bestBSSID[0], bestBSSID[1], bestBSSID[2], bestBSSID[3], 
+//                       bestBSSID[4], bestBSSID[5], bestSSID);
+//        // Apply static settings if necesscary
+//        if (stationList[bestStation].dhcp == false) {
+//            #if defined(ST_IP)
+//                Serial.println("Applying static IP settings");
+//                #if !defined (ST_GATEWAY)  || !defined (ST_NETMASK) 
+//                    #error "You must supply both Gateway and NetMask when specifying a static IP address"
+//                #endif
+//                IPAddress staticIP(ST_IP);
+//                IPAddress gateway(ST_GATEWAY);
+//                IPAddress subnet(ST_NETMASK);
+//                #if !defined(ST_DNS1)
+//                    WiFi.config(staticIP, gateway, subnet);
+//                #else
+//                    IPAddress dns1(ST_DNS1);
+//                #if !defined(ST_DNS2)
+//                    WiFi.config(staticIP, gateway, subnet, dns1);
+//                #else
+//                    IPAddress dns2(ST_DNS2);
+//                    WiFi.config(staticIP, gateway, subnet, dns1, dns2);
+//                #endif
+//                #endif
+//            #else
+//                Serial.println("Static IP settings requested but not defined in config, falling back to dhcp");
+//            #endif
+//        }
 
         #if defined(HOSTNAME)
             WiFi.setHostname(HOSTNAME);
         #endif
 
         // Initiate network connection request (3rd argument, channel = 0 is 'auto')
-        WiFi.begin(bestSSID, stationList[bestStation].password, 0, bestBSSID);
+//        WiFi.begin(bestSSID, stationList[bestStation].password, 0, bestBSSID);
+        WiFi.begin(ssid, password);
+
 
         // Wait to connect, or timeout
         unsigned long start = millis(); 
@@ -392,7 +394,7 @@ void WifiSetup() {
             Serial.println("Client connection Failed");
             WiFi.disconnect();   // (resets the WiFi scan)
         }
-    }
+//    }
 
     if (accesspoint && (WiFi.status() != WL_CONNECTED)) {
         // The accesspoint has been enabled, and we have not connected to any existing networks
