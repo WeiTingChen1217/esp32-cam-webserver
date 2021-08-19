@@ -1,1 +1,6 @@
 .DS_Store
+
+/stl/*/*.elt
+/stl/*/*.bac
+/stl/*/*/*.elt
+/stl/*/*/*.bac
