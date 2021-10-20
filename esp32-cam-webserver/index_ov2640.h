@@ -218,8 +218,8 @@ const uint8_t index_ov2640_html[] = R"=====(<!doctype html>
               <div class="input-group" id="rotate-group">
                 <label for="rotate">Rotate in Browser</label>
                 <select id="rotate" class="default-action">
-                  <option value="90">90&deg; (Right)</option>
                   <option value="0" selected="selected">0&deg; (None)</option>
+                  <option value="90">90&deg; (Right)</option>
                   <option value="-90">-90&deg; (Left)</option>
                 </select>
               </div>
@@ -245,11 +245,15 @@ const uint8_t index_ov2640_html[] = R"=====(<!doctype html>
               </div>
               <!--jacky add--> 
               <div class="input-group" id="setServo-group">
-                <label for="reboot" style="line-height: 2em;">Set Servo</label>
-                <button id="servoUp" title="Servo Up">Down</button>
-                <button id="servoDown" title="Servo Down">Up</button>
+                <label style="line-height: 2em;">Set Servo</label>
+                <button id="servoUp" title="Servo Up">Up</button>
+                <button id="servoDown" title="Servo Down">Down</button>
                 <button id="servoLeft" title="Servo Left">Left</button>
                 <button id="servoRight" title="Servo Right">Right</button>
+              </div>
+              <div class="input-group" id="wakeOnLan-group">
+                <label style="line-height: 2em;">Power On PC</label>
+                <button id="wakeOnLan" title="wake on lan">Wake On Lan</button>
               </div>
               <div class="input-group" id="cam_name-group">
                 <label for="cam_name">
@@ -309,7 +313,7 @@ const uint8_t index_ov2640_html[] = R"=====(<!doctype html>
     const setServoDown = document.getElementById('servoDown')
     const setServoLeft = document.getElementById('servoLeft')
     const setServoRight = document.getElementById('servoRight')
-
+    const setServoWakeOnLan = document.getElementById('wakeOnLan')
 
     const hide = el => {
       el.classList.add('hidden')
@@ -601,6 +605,9 @@ const uint8_t index_ov2640_html[] = R"=====(<!doctype html>
     }
     setServoRight.onclick = () => {
       updateConfig(setServoRight);
+    }
+    setServoWakeOnLan.onclick = () => {
+      updateConfig(setServoWakeOnLan);
     }
 
   })

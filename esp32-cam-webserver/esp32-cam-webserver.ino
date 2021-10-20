@@ -11,18 +11,23 @@
 //jacky add 20210816
 #include <ESP32Servo.h>
 
-#define SERVO_1      14
-#define SERVO_2      15
+#define SERVO_1      12
+#define SERVO_2      13
+#define SERVO_3      15
+
 
 #define SERVO_STEP   5
 
-Servo servoN1;
+Servo servoN1; //servoN1,N2 創建的原因 (https://www.qutaojiao.com/24527.html)
 Servo servoN2;
 Servo servo1;
 Servo servo2;
+Servo servo3;
 
-int servo1Pos = 180;
-int servo2Pos = 140;
+int servo1Pos = 90;
+int servo2Pos = 90;
+int servo3Pos = 90;
+
 
 
 /* This sketch is a extension/expansion/reork of the 'official' ESP32 Camera example
@@ -266,7 +271,7 @@ void setLamp(int newVal) {
 //jacky add 20210816
 void setServo(int dir) {
       if(dir == 1) { //up
-        if(servo1Pos <= 170) {
+        if(servo1Pos <= 120) {
           servo1Pos += 10;
           servo1.write(servo1Pos);
         }
@@ -274,7 +279,7 @@ void setServo(int dir) {
         Serial.println("Up");
       }
       else if(dir == 2) { //left
-        if(servo2Pos <= 120) {
+        if(servo2Pos <= 130) {
           servo2Pos += 10;
           servo2.write(servo2Pos);
         }
@@ -282,7 +287,7 @@ void setServo(int dir) {
         Serial.println("Left");
       }
       else if(dir == 3) { //right
-        if(servo2Pos >= 10) {
+        if(servo2Pos >= 70) {
           servo2Pos -= 10;
           servo2.write(servo2Pos);
         }
@@ -290,12 +295,20 @@ void setServo(int dir) {
         Serial.println("Right");
       }
       else if(dir == 4) { //down
-        if(servo1Pos >= 10) {
+        if(servo1Pos >= 60) {
           servo1Pos -= 10;
           servo1.write(servo1Pos);
         }
         Serial.println(servo1Pos);
         Serial.println("Down");
+      }
+      else if(dir == 5) { //wake on lan
+       
+        servo3.write(servo3Pos - 30);
+        delay(1000);
+        servo3.write(servo3Pos);
+        
+        Serial.println("Wake On Lan");
       }
 }
 
@@ -505,13 +518,16 @@ void setup() {
     servo1.setPeriodHertz(50);    // standard 50 hz servo
     servo2.setPeriodHertz(50);    // standard 50 hz servo
     servoN1.attach(2, 1000, 2000);
-    servoN2.attach(13, 1000, 2000);
+    servoN2.attach(13, 1000, 2000);  
     
     servo1.attach(SERVO_1, 1000, 2000);
     servo2.attach(SERVO_2, 1000, 2000);
+    servo3.attach(SERVO_3, 1000, 2000);
+
     
     servo1.write(servo1Pos);
     servo2.write(servo2Pos);
+    servo3.write(servo3Pos);
     
     // This might reduce boot loops caused by camera init failures when soft rebooting
     // See, for instance, https://esp32.com/viewtopic.php?t=3152

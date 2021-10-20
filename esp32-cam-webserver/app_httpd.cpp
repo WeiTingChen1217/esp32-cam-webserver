@@ -367,6 +367,7 @@ static esp_err_t cmd_handler(httpd_req_t *req){
     else if(!strcmp(variable, "servoLeft")) setServo(2);
     else if(!strcmp(variable, "servoRight")) setServo(3);
     else if(!strcmp(variable, "servoDown")) setServo(4);
+    else if(!strcmp(variable, "wakeOnLan")) setServo(5);
     
     else if(!strcmp(variable, "save_prefs")) {
         if (filesystem) savePrefs(SPIFFS);
